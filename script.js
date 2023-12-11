@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   // Display date
-  // document.getElementById("currentDay").textContent = dayjs().format("dddd, MMMM D");
-  $("#currentDay").text(dayjs().format("dddd, MMMM D"));
+    $("#currentDay").text(dayjs().format("dddd, MMMM D"));
 
   // Create the time blocks
 
@@ -66,9 +65,37 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Save the Schedule
+  function save(a) {
+    if (a.target.classList.contains("saveBtn")) {
+      var blockColour = a.target.closest(".time-block").getAttribute("data-hour");
+      var text = a.target.previousElementSibling.value;
+      localStorage.setItem(blockColour, text);
+    }
+  }
+
+  document.addEventListener("click", save);
+
+// Load the Schedule
+   function load() {
+
+    $(".time-block").each(function() {
+      
+      var hour = $(this).data("hour");  
+      var saved = localStorage.getItem(hour);
+  
+      if (saved) {
+        $(this).find("textarea").val(saved);
+      }
+  
+    });
+  
+  }
+
   // Launch Functions
 
   timeBlocks();
   blockColours();
+  load();
  
 });
